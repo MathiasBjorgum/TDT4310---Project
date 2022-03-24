@@ -17,7 +17,8 @@ def clean_news_data(news_df: pd.DataFrame) -> pd.DataFrame:
     return returning_df
 
 def clean_and_combine(stock_df: pd.DataFrame, news_df: pd.DataFrame) -> pd.DataFrame:
+    '''Cleans and combines a given stock dataframe and news dataframe'''
     stock_df = clean_stock_data(stock_df)
     news_df = clean_news_data(news_df)
 
-    return pd.merge(stock_df, news_df, how="outer", on="Date")
+    return pd.merge(stock_df, news_df, how="left", on="Date")
