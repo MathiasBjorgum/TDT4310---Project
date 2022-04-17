@@ -10,5 +10,3 @@ def clean_data(review: str) -> str:
     review = " ".join([word for word in review if not word in stopwords])
 
     return review
-
-print("hei")
