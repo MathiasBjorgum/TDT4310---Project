@@ -1,20 +1,15 @@
-# Imports go here
-import os
 import sys
 
 sys.path.append(".")
 
-import nltk
 import pandas as pd
-from sklearn.metrics import (accuracy_score, confusion_matrix,
-                             plot_confusion_matrix,
-                             precision_recall_fscore_support)
-from sklearn.model_selection import train_test_split
 
 import preprocessing.dataframe_manipulation as df_manipulation
 import preprocessing.feature_engineering as feature_engineering
-from model_manipulation import load_model, save_model, test_model, train_model
-from models import KNNClassifier, SVMClassifier
+from models.model_manipulation import (load_model, save_model, test_model,
+                                       test_multiple_models, train_model,
+                                       train_multiple_models)
+from models.models import DTClassifier, KNNClassifier, SVMClassifier
 
 
 def main():
@@ -38,16 +33,23 @@ def main():
         knn_classifier = load_model("knn")
 
     else:
-        svm_classifier = train_model(X_train, y_train, SVMClassifier())
-        knn_classifier = train_model(X_train, y_train, KNNClassifier(neighbors=5))
+        svm_classifier, knn_classifier, dt_classifier = train_multiple_models(X_train, y_train, [
+            SVMClassifier(),
+            KNNClassifier(neighbors=5),
+            DTClassifier()
+            ]
+        )
 
     if SAVE_MODEL:
         save_model(svm_classifier, "svm")
         save_model(knn_classifier, "knn")
+        save_model(dt_classifier, "dt")
 
-    test_model(X_val, y_val, svm_classifier)
-    test_model(X_val, y_val, knn_classifier)
-
+    test_multiple_models(
+        X_val, y_val, [svm_classifier, knn_classifier, dt_classifier])
+    # test_model(X_val, y_val, svm_classifier)
+    # test_model(X_val, y_val, dt_classifier)
+    # test_model(X_val, y_val, knn_classifier)
 
 
 if __name__ == "__main__":

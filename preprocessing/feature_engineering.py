@@ -31,6 +31,7 @@ def textual_features(df: pd.DataFrame) -> pd.DataFrame:
     df["word_count"] = df["text"].apply(lambda x: len(x.split()))
     
     df["text"].apply(remove_digit_stopword)
+    df = df.drop(columns=["sentiment", "rating"])
     return df
 
 
