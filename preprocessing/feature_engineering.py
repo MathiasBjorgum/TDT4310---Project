@@ -1,12 +1,14 @@
 import re
+import os
 from typing import Any
 
 import nltk
 import pandas as pd
-from matplotlib.pyplot import text
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from scipy.sparse import csr_matrix
+
+from models.model_manipulation import save_vectorizer
 
 
 def remove_stopwords(text: str) -> str:
@@ -38,6 +40,7 @@ def textual_features(df: pd.DataFrame) -> pd.DataFrame:
 def tfidf_vectorize(df: pd.DataFrame) -> csr_matrix:
     vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
     X = vectorizer.fit_transform(df["text"])
+    save_vectorizer(vectorizer, "tfidf")
     return X
 
 
