@@ -4,6 +4,7 @@ from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.dummy import DummyClassifier
 
 
 class SVMClassifier():
@@ -27,6 +28,13 @@ class DTClassifier():
         self.classifier = DecisionTreeClassifier()
         self.classifier.__name__ = "DecisionTreeClassifier"
         self.__name__ = "DecisionTreeClassifier"
+
+class BaselineClassifier():
+
+    def __init__(self):
+        self.classifier = DummyClassifier()
+        self.classifier.__name__ = "DummyClassifier"
+        self.__name__ = "DummyClassifier"
 
 class EnsembleClassifier():
     

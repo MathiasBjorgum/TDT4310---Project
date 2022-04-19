@@ -33,7 +33,7 @@ def test_model(X_test, y_test, model):
     console_print(f"Testing {model.__name__}")
     y_pred = model.predict(X_test)
     console_print(f"Classification report for {model.__name__}")
-    print(classification_report(y_test, y_pred))
+    print(classification_report(y_test, y_pred, zero_division=0))
 
 def test_model_from_df(df: pd.DataFrame, model, vectorizer_name: str):
     y = df["sentiment"]

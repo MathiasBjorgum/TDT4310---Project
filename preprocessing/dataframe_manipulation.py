@@ -22,7 +22,7 @@ def process_dataframe(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Processes the dataframe to the correct format
     '''
-    df["sentiment"] = pd.cut(x=df["Rating"], bins=[0, 3, 6], labels=[0, 1])
+    df["sentiment"] = pd.cut(x=df["Rating"], bins=[0, 4, 6], labels=[0, 1])
     df = df.rename(columns={"Review": "text", "Rating": "rating"})
     return df
 

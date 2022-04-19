@@ -10,7 +10,7 @@ from preprocessing.feature_engineering import textual_features, tfidf_vectorize
 from models.model_manipulation import (load_model, save_model, test_model, test_model_from_df,
                                        test_multiple_models, train_model,
                                        train_multiple_models)
-from models.models import DTClassifier, KNNClassifier, SVMClassifier
+from models.models import BaselineClassifier, DTClassifier, KNNClassifier, SVMClassifier
 from helpers.helpers import console_print
 
 def main():
@@ -28,6 +28,8 @@ def main():
     X_train, X_val, X_test, y_train, y_val, y_test = train_validate_test_split(
         X, y, test_size=0.1, val_size=0.1
     )
+
+    baseline_classifier = train_model(X_train, y_train, BaselineClassifier())
 
     if FROM_SAVED:
         svm_classifier = load_model("svm")
@@ -48,7 +50,7 @@ def main():
         save_model(dt_classifier, "dt")
 
     test_multiple_models(
-        X_val, y_val, [svm_classifier, knn_classifier, dt_classifier])
+        X_val, y_val, [baseline_classifier, svm_classifier, knn_classifier, dt_classifier])
 
     '''
     console_print("Testing on unseen data\n")
