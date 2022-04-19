@@ -15,11 +15,15 @@ import preprocessing.feature_engineering
 
 def train_model(X_train, y_train, model) -> Any:
     '''Trains a genral model'''
-    console_print(f"Training {model.__name__}")
-    classifier = model.classifier
-    classifier.fit(X_train, y_train)
-    console_print(f"Done training {model.__name__}\n")
-    return classifier
+    console_print(f"Training {model.name}")
+
+    # classifier = model.classifier
+    # classifier.fit(X_train, y_train)
+
+    model.classifier.fit(X_train, y_train)
+
+    console_print(f"Done training {model.name}\n")
+    return model
 
 def train_multiple_models(X_train, y_train, models):
     '''Wrapper to train multiple models'''
@@ -30,9 +34,9 @@ def train_multiple_models(X_train, y_train, models):
 
 def test_model(X_test, y_test, model):
     '''Tests the model on the given values'''
-    console_print(f"Testing {model.__name__}")
-    y_pred = model.predict(X_test)
-    console_print(f"Classification report for {model.__name__}")
+    console_print(f"Testing {model.name}")
+    y_pred = model.classifier.predict(X_test)
+    console_print(f"Classification report for {model.name}")
     print(classification_report(y_test, y_pred, zero_division=0))
 
 def test_model_from_df(df: pd.DataFrame, model, vectorizer_name: str):

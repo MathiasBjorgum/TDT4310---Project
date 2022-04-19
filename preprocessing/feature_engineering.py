@@ -7,8 +7,10 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 from scipy.sparse import csr_matrix
+from helpers.file_handeling import FileHandler
 
 from models.model_manipulation import save_vectorizer
+from models.vectorizers import CustomTfidfVectorizer, VectorizerI
 
 
 def remove_stopwords(text: str) -> str:
@@ -36,11 +38,19 @@ def textual_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop(columns=["sentiment", "rating"])
     return df
 
-
-def tfidf_vectorize(df: pd.DataFrame) -> csr_matrix:
-    vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
+def vectorize(df: pd.DataFrame, vectorizer: VectorizerI):
+    '''Vectorizes given the vectorizer'''
     X = vectorizer.fit_transform(df["text"])
-    save_vectorizer(vectorizer, "tfidf")
+    return (X, vectorizer)
+
+def tfidf_vectorize(df: pd.DataFrame, file_handler: FileHandler = None) -> csr_matrix:
+    # vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
+    vectorizer = CustomTfidfVectorizer()
+    X = vectorizer.vectorizer.fit_transform(df["text"])
+
+    if file_handler != None:
+        file_handler.save_vectorizer(vectorizer, "tfidf")
+
     return X
 
 
