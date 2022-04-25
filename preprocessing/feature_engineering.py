@@ -9,7 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from scipy.sparse import csr_matrix
 from helpers.file_handeling import FileHandler
 
-from models.model_manipulation import save_vectorizer
+# from models.model_manipulation import save_vectorizer
 from models.vectorizers import CustomTfidfVectorizer, VectorizerI
 
 
@@ -38,10 +38,13 @@ def textual_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.drop(columns=["sentiment", "rating"])
     return df
 
-def vectorize(df: pd.DataFrame, vectorizer: VectorizerI):
+def vectorize(df: pd.DataFrame, vectorizer: VectorizerI, file_handler: FileHandler = None):
     '''Vectorizes given the vectorizer'''
     X = vectorizer.fit_transform(df["text"])
-    return (X, vectorizer)
+    if file_handler != None:
+        file_handler.save_vectorizer(vectorizer, "tfidf")
+
+    return X
 
 def tfidf_vectorize(df: pd.DataFrame, file_handler: FileHandler = None) -> csr_matrix:
     # vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
@@ -54,16 +57,16 @@ def tfidf_vectorize(df: pd.DataFrame, file_handler: FileHandler = None) -> csr_m
     return X
 
 
-def tfidf_features(df: pd.DataFrame) -> pd.DataFrame:
-    vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
-    X = vectorizer.fit_transform(df["text"])
+# def tfidf_features(df: pd.DataFrame) -> pd.DataFrame:
+#     vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
+#     X = vectorizer.fit_transform(df["text"])
 
-    for i, col in enumerate(vectorizer.get_feature_names_out()):
-        df[col] = pd.Series(X[:, i].toarray().ravel(), fill_value=0).sparse()
+#     for i, col in enumerate(vectorizer.get_feature_names_out()):
+#         df[col] = pd.Series(X[:, i].toarray().ravel(), fill_value=0).sparse()
 
 
-def get_feature_df(df: pd.DataFrame) -> pd.DataFrame:
-    '''Returns a `pd.DataFrame` with features'''
-    df_tfidf = tfidf_features(df)
-    df_features = textual_features(df_tfidf)
-    return df_features
+# def get_feature_df(df: pd.DataFrame) -> pd.DataFrame:
+#     '''Returns a `pd.DataFrame` with features'''
+#     df_tfidf = tfidf_features(df)
+#     df_features = textual_features(df_tfidf)
+#     return df_features

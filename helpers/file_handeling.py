@@ -53,6 +53,7 @@ class FileHandler():
         pickle.dump(vectorizer, open(os.path.join(model_path, filename), "wb"))
 
     def load_vectorizer(self, filename):
+        '''Loads a vectorizer with filename. The function adds `.vec`'''
         filename = filename + ".vect"
         cwd = os.getcwd()
         model_path = os.path.join(cwd, "saved_objects", "vectorizers")

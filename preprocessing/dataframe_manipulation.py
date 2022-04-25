@@ -33,7 +33,11 @@ def get_and_process_df(filename: str) -> pd.DataFrame:
 
 def train_validate_test_split(X: Any, y: Any, test_size: float, val_size: float) -> Any:
     '''Creates train, validation and test split'''
-    X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=test_size)
-    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=val_size)
+    X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=test_size, random_state=4310)
+    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=val_size, random_state=4310)
 
     return X_train, X_val, X_test, y_train, y_val, y_test
+
+def total_train_validate_test_split(data, test_size: float, val_size: float):
+    data_temp, test_set = train_test_split(data, test_size=test_size)
+    train_set, val_set = train_test_split(data, test_size=val_size)
