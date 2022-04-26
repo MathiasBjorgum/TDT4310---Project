@@ -12,6 +12,7 @@ This project requires some external packages, listed here
 ```
 scikit-learn
 pandas
+nltk
 ```
 
 ### Other setup
