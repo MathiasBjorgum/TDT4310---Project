@@ -1,15 +1,12 @@
 import re
-import os
 from typing import Any
 
 import nltk
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 from scipy.sparse import csr_matrix
-from helpers.file_handeling import FileHandler
 
-# from models.model_manipulation import save_vectorizer
+from helpers.file_handeling import FileHandler
 from models.vectorizers import CustomTfidfVectorizer, VectorizerI
 
 

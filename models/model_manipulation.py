@@ -1,17 +1,12 @@
-import os
-import pickle
 import sys
-from datetime import datetime
 from typing import Any, List
-import pandas as pd
 from sklearn.model_selection import GridSearchCV
 
 sys.path.append(".")
 
-from sklearn.metrics import accuracy_score, classification_report, f1_score
+from sklearn.metrics import accuracy_score, f1_score
 
 from helpers.helpers import console_print
-import preprocessing.feature_engineering
 
 
 def train_model(X_train, y_train, model) -> Any:
