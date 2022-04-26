@@ -18,3 +18,7 @@ nltk
 ### Other setup
 
 The data is not included in this repository, due to limitations in git. The project however assumes that the data is put in a seperate folder called `data`.
+
+## Running the repository
+
+The repository should be run from [`main.py`](/main.py/).
