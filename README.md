@@ -5,14 +5,13 @@ The dataset that will be used here is found on kaggle: https://www.kaggle.com/da
 
 ## Setup
 
-### Environment setup
+### Requirements
 
-I recommend using a `conda` environment for this repository. The requirements are found in `requirements.txt` and can be used in conda by running:
+This project requires some external packages, listed here
 
 ```
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda create --name <env> --file requirements.txt
+scikit-learn
+pandas
 ```
 
 ### Other setup

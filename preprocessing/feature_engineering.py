@@ -27,14 +27,29 @@ def remove_digit_stopword(review: str) -> str:
 
     return review
 
+def lemmatize(text: str) -> str:
+    lemmatizer = nltk.WordNetLemmatizer()
+    sents = text.split(" ")
+    returning = " ".join(lemmatizer.lemmatize(word) for word in sents)
+    return returning
 
-def textual_features(df: pd.DataFrame) -> pd.DataFrame:
+def stemmer(text: str) -> str:
+    stemmer = nltk.PorterStemmer()
+    sents = text.split(" ")
+    return " ".join(stemmer.stem(word) for word in sents)
+
+
+def textual_features(df: pd.DataFrame, stem: bool = False, lem: bool = False) -> pd.DataFrame:
     df["num_unique_words"] = df["text"].apply(
         lambda x: len(set(word for word in x.split()))
     )
     df["word_count"] = df["text"].apply(lambda x: len(x.split()))
     
     df["text"].apply(remove_digit_stopword)
+    if lem:
+        df["text"].apply(stemmer)
+    if stem:
+        df["text"].apply(lemmatize)
     df = df.drop(columns=["sentiment", "rating"])
     return df
 
@@ -55,18 +70,3 @@ def tfidf_vectorize(df: pd.DataFrame, file_handler: FileHandler = None) -> csr_m
         file_handler.save_vectorizer(vectorizer, "tfidf")
 
     return X
-
-
-# def tfidf_features(df: pd.DataFrame) -> pd.DataFrame:
-#     vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
-#     X = vectorizer.fit_transform(df["text"])
-
-#     for i, col in enumerate(vectorizer.get_feature_names_out()):
-#         df[col] = pd.Series(X[:, i].toarray().ravel(), fill_value=0).sparse()
-
-
-# def get_feature_df(df: pd.DataFrame) -> pd.DataFrame:
-#     '''Returns a `pd.DataFrame` with features'''
-#     df_tfidf = tfidf_features(df)
-#     df_features = textual_features(df_tfidf)
-#     return df_features

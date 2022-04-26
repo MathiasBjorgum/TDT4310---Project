@@ -58,6 +58,14 @@ class FileHandler():
         cwd = os.getcwd()
         model_path = os.path.join(cwd, "saved_objects", "vectorizers")
         try:
+            console_print(f"loading {model_path}")
             return pickle.load(open(os.path.join(model_path, filename), "rb"))
         except:
             console_print(f"Could not load file {filename}")
+
+    def save_hyperparams(self, hyperparams):
+        path = os.path.join(self.cwd, "saved_objects", "hyperparams.txt")
+        
+        with open(path, "w") as f:
+            f.write(hyperparams.__repr__())
+            # f.writelines(hyperparams)

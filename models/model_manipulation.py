@@ -4,17 +4,18 @@ import sys
 from datetime import datetime
 from typing import Any, List
 import pandas as pd
+from sklearn.model_selection import GridSearchCV
 
 sys.path.append(".")
 
-from sklearn.metrics import classification_report
+from sklearn.metrics import accuracy_score, classification_report, f1_score
 
 from helpers.helpers import console_print
 import preprocessing.feature_engineering
 
 
 def train_model(X_train, y_train, model) -> Any:
-    '''Trains a genral model'''
+    '''Trains and returns a genral model'''
     console_print(f"Training {model.name}")
 
     # classifier = model.classifier
@@ -36,51 +37,28 @@ def test_model(X_test, y_test, model):
     '''Tests the model on the given values'''
     console_print(f"Testing {model.name}")
     y_pred = model.classifier.predict(X_test)
-    console_print(f"Classification report for {model.name}")
-    print(classification_report(y_test, y_pred, zero_division=0))
 
-def test_model_from_df(df: pd.DataFrame, model, vectorizer_name: str):
-    y = df["sentiment"]
-    X = preprocessing.feature_engineering.textual_features(df)
-    vectorizer = load_vectorizer(vectorizer_name)
-    X = vectorizer.transform(X["text"])
-    test_model(X, y, model)
+    print(f"acc. & F1")
+    print(f"{accuracy_score(y_test, y_pred):.3f} & {f1_score(y_test, y_pred):.3f}")
+
+def hyper_param_tuning(params, model, X_val, y_val):
+    '''Tests what hyperparameters to use'''
+    gs = GridSearchCV(model.classifier,
+        param_grid=params,
+        scoring="accuracy",
+        cv=5
+    )
+    gs.fit(X_val, y_val)
+    return gs.best_params_
+
+# def test_model_from_df(df: pd.DataFrame, model, vectorizer_name: str):
+#     y = df["sentiment"]
+#     X = preprocessing.feature_engineering.textual_features(df)
+#     vectorizer = load_vectorizer(vectorizer_name)
+#     X = vectorizer.transform(X["text"])
+#     test_model(X, y, model)
 
 def test_multiple_models(X_test, y_test, models: List):
     '''Wrapper to test multiple models at once'''
     for model in models:
         test_model(X_test, y_test, model)
-
-
-def save_model(model, model_name):
-    '''Saves a model to the default path'''
-    model_name = model_name + ".model"
-    cwd = os.getcwd()
-    model_path = os.path.join(cwd, "saved_models")
-    pickle.dump(model, open(os.path.join(model_path, model_name), "wb"))
-
-
-def load_model(model_name):
-    '''Loads a model name from the default path'''
-    model_name = model_name + ".model"
-    cwd = os.getcwd()
-    model_path = os.path.join(cwd, "saved_models")
-    try:
-        return pickle.load(open(os.path.join(model_path, model_name), "rb"))
-    except:
-        console_print(f"Could not load file {model_name}")
-
-def save_vectorizer(vectorizer, filename):
-    filename = filename + ".vect"
-    cwd = os.getcwd()
-    model_path = os.path.join(cwd, "saved_models", "vectorizers")
-    pickle.dump(vectorizer, open(os.path.join(model_path, filename), "wb"))
-
-def load_vectorizer(filename):
-    filename = filename + ".vect"
-    cwd = os.getcwd()
-    model_path = os.path.join(cwd, "saved_models", "vectorizers")
-    try:
-        return pickle.load(open(os.path.join(model_path, filename), "rb"))
-    except:
-        console_print(f"Could not load file {filename}")
