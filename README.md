@@ -3,6 +3,8 @@ Repository for the course project for `TDT4310 - Intelligent Text Analytics and 
 
 The dataset that will be used here is found on kaggle: https://www.kaggle.com/datasets/andrewmvd/trip-advisor-hotel-reviews.
 
+The project report for this repository is found here: [`here`](/TDT4310 - Project_report.pdf/)
+
 ## Setup
 
 ### Requirements
