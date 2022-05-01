@@ -76,17 +76,9 @@ def main():
         file_handler.save_model(rf_classifier, "rf")
         file_handler.save_model(voting_classifier, "voting")
 
-
-    # X_test = vectorize(X_test, file_handler.load_vectorizer("tfidf"))
     test_multiple_models(
         X_test, y_test, [baseline_classifier, svm_classifier, knn_classifier, nb_classifier, rf_classifier, voting_classifier])
 
-
-    '''
-    console_print("Testing on unseen data\n")
-    new_data = get_and_process_df("new_tripadvisor_data.csv")
-    test_model_from_df(new_data, knn_classifier, "tfidf")
-    '''
 
 
 if __name__ == "__main__":
