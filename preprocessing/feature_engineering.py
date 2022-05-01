@@ -35,10 +35,6 @@ def stemmer(text: str) -> str:
 
 
 def textual_features(df: pd.DataFrame, stem: bool = False, lem: bool = False) -> pd.DataFrame:
-    df["num_unique_words"] = df["text"].apply(
-        lambda x: len(set(word for word in x.split()))
-    )
-    df["word_count"] = df["text"].apply(lambda x: len(x.split()))
     
     df["text"].apply(remove_digit_stopword)
     if lem:
