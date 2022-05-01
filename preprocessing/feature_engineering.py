@@ -4,10 +4,8 @@ from typing import Any
 import nltk
 import pandas as pd
 
-from scipy.sparse import csr_matrix
-
 from helpers.file_handeling import FileHandler
-from models.vectorizers import CustomTfidfVectorizer, VectorizerI
+from models.vectorizers import VectorizerI
 
 
 def remove_stopwords(text: str) -> str:
@@ -53,16 +51,6 @@ def textual_features(df: pd.DataFrame, stem: bool = False, lem: bool = False) ->
 def vectorize(df: pd.DataFrame, vectorizer: VectorizerI, file_handler: FileHandler = None):
     '''Vectorizes given the vectorizer'''
     X = vectorizer.fit_transform(df["text"])
-    if file_handler != None:
-        file_handler.save_vectorizer(vectorizer, "tfidf")
-
-    return X
-
-def tfidf_vectorize(df: pd.DataFrame, file_handler: FileHandler = None) -> csr_matrix:
-    # vectorizer = TfidfVectorizer(stop_words="english", min_df=0.005)
-    vectorizer = CustomTfidfVectorizer()
-    X = vectorizer.vectorizer.fit_transform(df["text"])
-
     if file_handler != None:
         file_handler.save_vectorizer(vectorizer, "tfidf")
 

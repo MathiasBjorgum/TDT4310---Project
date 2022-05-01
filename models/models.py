@@ -69,15 +69,13 @@ class NBClassifier(ClassifierI):
 
 class EnsembleClassifier(ClassifierI):
 
-    def __init__(self, input_classifiers):
-        # classifiers = [classifier.classifier for classifier in input_classifiers]
+    def __init__(self):
+        
         classifiers = []
         classifiers.append(("SVC", SVMClassifier(kernel = "rbf", C=1).classifier))
         classifiers.append(("KNN", KNNClassifier(neighbors=7).classifier))
-        # classifiers.append(("DecisionTree", DTClassifier().classifier))
         classifiers.append(("RF", RFClassifier(n_estimators=120, criterion="entropy").classifier))
         classifiers.append(("NB", NBClassifier(alpha=1).classifier))
-        # self.__name__ = "VotingClassifier"
 
         self.classifier = VotingClassifier(
             estimators=classifiers,

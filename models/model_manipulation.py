@@ -8,13 +8,9 @@ from sklearn.metrics import accuracy_score, f1_score
 
 from helpers.helpers import console_print
 
-
 def train_model(X_train, y_train, model) -> Any:
     '''Trains and returns a genral model'''
     console_print(f"Training {model.name}")
-
-    # classifier = model.classifier
-    # classifier.fit(X_train, y_train)
 
     model.classifier.fit(X_train, y_train)
 
@@ -45,13 +41,6 @@ def hyper_param_tuning(params, model, X_val, y_val):
     )
     gs.fit(X_val, y_val)
     return gs.best_params_
-
-# def test_model_from_df(df: pd.DataFrame, model, vectorizer_name: str):
-#     y = df["sentiment"]
-#     X = preprocessing.feature_engineering.textual_features(df)
-#     vectorizer = load_vectorizer(vectorizer_name)
-#     X = vectorizer.transform(X["text"])
-#     test_model(X, y, model)
 
 def test_multiple_models(X_test, y_test, models: List):
     '''Wrapper to test multiple models at once'''

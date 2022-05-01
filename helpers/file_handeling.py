@@ -33,7 +33,6 @@ class FileHandler():
         model_name = model_name + ".model"
         model_path = os.path.join(self.cwd, "saved_objects", "models")
         pickle.dump(model, open(os.path.join(model_path, model_name), "wb"))
-        # self.save_object(model, os.path.join(model_path, model_name))
 
 
     def load_model(self, model_name):
